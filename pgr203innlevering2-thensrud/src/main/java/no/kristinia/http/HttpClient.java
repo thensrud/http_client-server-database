@@ -41,3 +41,7 @@ public class HttpClient {
     public int getStatusCode() {
         return statusCode;
     }
+
+    public String getResponseHeader(String headerName) {
+        return null;
+    }
