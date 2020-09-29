@@ -43,7 +43,7 @@ public class HttpClient {
         responseBody = body.toString();
     }
 
-    private String readLine(Socket socket) throws IOException {
+    public static String readLine(Socket socket) throws IOException {
         StringBuilder line = new StringBuilder();
         int c;
         while ((c = socket.getInputStream().read()) != -1) {
