@@ -29,4 +29,11 @@ class HttpServerTest {
         assertEquals("10", client.getResponseHeader("Content-Length"));
     }
 
+    @Test
+    void shouldReturnResponseBody() throws IOException {
+        new HttpServer(10004);
+        HttpClient client = new HttpClient("localhost", 10004, "/echo?body=HelloWorld");
+        assertEquals("HelloWorld", client.getResponseBody());
+    }
+
 }
