@@ -1,3 +1,5 @@
+![Java CI with Maven](https://github.com/kristiania/pgr203innlevering2-thensrud/workflows/Java%20CI%20with%20Maven/badge.svg)
+
 Innlevering 2
 
 Fredrik Holm Eikrem og Thorstein Hagen Ensrud
