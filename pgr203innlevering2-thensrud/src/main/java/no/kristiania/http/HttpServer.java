@@ -90,7 +90,7 @@ public class HttpServer {
 
     public static void main (String[] args) throws IOException {
         HttpServer server = new HttpServer(8080);
-        server.setContentRoot(new File("pgr203innlevering2-thensrud/src/main/resources/"));
+        server.setContentRoot(new File("pgr203innlevering2-thensrud/src/main/resources"));
     }
 
     public void setContentRoot(File contentRoot) {
