@@ -46,19 +46,20 @@ public class HttpServer {
         } else {
             File file = new File(contentRoot, requestTarget);
             statusCode = "200";
+            String contentType = "text/plain";
+            if (file.getName().endsWith(".html")) {
+                contentType = "text/html";
+            }
             String response = "HTTP/1.1 " + statusCode + " OK\r" +
                     "\n" +
                     "Content-Length: " + file.length() + "\r\n" +
-                    "Content-Type: text/plain\r\n"+
+                    "Content-Type: " + contentType + "\r\n" +
                     "\r\n";
 
             clientSocket.getOutputStream().write(response.getBytes());
 
             new FileInputStream(file).transferTo(clientSocket.getOutputStream());
-
-
         }
-
 
         String response = "HTTP/1.1 " + statusCode + " OK\r" +
                 "\n" +
