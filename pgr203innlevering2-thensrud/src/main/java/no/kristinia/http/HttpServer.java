@@ -1,5 +1,7 @@
 package no.kristinia.http;
 
+import no.kristiania.http.HttpClient;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;

@@ -1,4 +1,4 @@
-package no.kristinia.http;
+package no.kristiania.http;
 
 import org.junit.jupiter.api.Test;
 
