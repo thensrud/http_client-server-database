@@ -1,6 +1,7 @@
 Innlevering 2
 
-Fredrik Holm Eikrem og Thorstein Enstrud Hagen
+Fredrik Holm Eikrem og Thorstein Hagen Ensrud
+
 Beskrivelse av prosjektet:
 
 I innlevering 2 har vi laget en http-server med en HTTP-klient. Prosjektet inneholder flere test-klasser som kjøres og testes opp mot serveren når den er i bruk. 
