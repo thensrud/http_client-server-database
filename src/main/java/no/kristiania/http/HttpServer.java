@@ -53,7 +53,7 @@ public class HttpServer {
         } else {
             if (requestPath.equals("/echo")) {
                 handleEchoRequest(clientSocket, requestTarget, questionPos);
-            } else if (requestPath.equals("/api/workers")) {
+            } else if (requestPath.equals("/api/showWorkers")) {
                 handleGetWorker(clientSocket);
             } else {
                 File file = new File(contentRoot, requestPath);
@@ -76,6 +76,7 @@ public class HttpServer {
                 }
                 String response = "HTTP/1.1 " + statusCode + " OK\r\n" +
                         "Content-Length: " + file.length() + "\r\n" +
+                        "Connection: " + "close" + "\r\n" +
                         "Content-Type: " + contentType + "\r\n" +
                         "\r\n";
                 clientSocket.getOutputStream().write(response.getBytes());
@@ -122,8 +123,8 @@ public class HttpServer {
     }
 
     public static void main(String[] args) throws IOException {
-        HttpServer server = new HttpServer(8080);
-        server.setContentRoot(new File("pgr203innlevering2-thensrud/src/main/resources"));
+        HttpServer server = new HttpServer(8085);
+        server.setContentRoot(new File("src/main/resources/"));
     }
 
     public void setContentRoot(File contentRoot) {

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Show workers</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Show members</h1>
+    <div id="showWorkers"></div>
+
+<script>
+    const workers = document.getElementById("showWorkers");
+    fetch("/api/showWorkers").then(resp => resp.text()).then(html => showWorkers.innerHTML = hmtl);
+</script>
+</body>
+</html>
