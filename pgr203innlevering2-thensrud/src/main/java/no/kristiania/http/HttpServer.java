@@ -5,10 +5,13 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
 public class HttpServer {
 
     private File contentRoot;
+    private List<String> productNames = new ArrayList<>();
 
     public HttpServer(int port) throws IOException {
         ServerSocket serverSocket = new ServerSocket(port);
@@ -87,10 +90,14 @@ public class HttpServer {
 
     public static void main (String[] args) throws IOException {
         HttpServer server = new HttpServer(8080);
-        server.setContentRoot(new File("src/main/resources"));
+        server.setContentRoot(new File("pgr203innlevering2-thensrud/src/main/resources/"));
     }
 
     public void setContentRoot(File contentRoot) {
         this.contentRoot = contentRoot;
+    }
+
+    public List<String> getProductNames() {
+        return productNames;
     }
 }
