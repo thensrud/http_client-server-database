@@ -8,8 +8,6 @@ import java.nio.file.Files;
 import java.util.Date;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class HttpServerTest {
 
     @Test

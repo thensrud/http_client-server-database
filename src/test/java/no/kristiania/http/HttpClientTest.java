@@ -4,8 +4,6 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class HttpClientTest {
 
     @Test
@@ -31,5 +29,4 @@ class HttpClientTest {
         HttpClient client = new HttpClient("urlecho.appspot.com", 80, "/echo?body=Kristiania");
         assertEquals("Kristiania", client.getResponseBody());
     }
-
 }
