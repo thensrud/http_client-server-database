@@ -33,6 +33,9 @@ public class HttpServer {
         String body = "Hello <strong>World</strong>";
 
         int questionPos = requestTarget.indexOf('?');
+
+        String requestPath = questionPos != -1 ? requestTarget.substring(0, questionPos) : requestTarget;
+
         if (questionPos != -1) {
             QueryString queryString = new QueryString(requestTarget.substring(questionPos+1));
             if (queryString.getParameter("status") != null){
@@ -43,8 +46,18 @@ public class HttpServer {
                 body = queryString.getParameter("body");
 
             }
-        } else {
-            File file = new File(contentRoot, requestTarget);
+        } else if (!requestPath.equals("/echo")){
+            File file = new File(contentRoot, requestPath);
+            if(!file.exists()){
+                body = file + "Does not exist";
+                String response = "HTTP/1.1 404 Not Found \r\n" +
+                        "Content-Length: " + body.length() + "\r\n" +
+                        "\r\n" +
+                        body;
+
+                clientSocket.getOutputStream().write(response.getBytes());
+                return;
+            }
             statusCode = "200";
             String contentType = "text/plain";
             if (file.getName().endsWith(".html")) {
