@@ -10,3 +10,5 @@ Server-klassen kjøres for å få kunne starte serveren. Vi har valgt å kjøre 
 Prosjektet har også en klient-klasse som kommuniserer med server-klassene. Dette gjør at serveren kan laste opp og ned data som brukeren skriver inn.
 Prosjektet inneholder html og css filer for at serveren skal ha et grensesnitt. Dette gjør at serveren kan kommunisere med nettleseren. 
 
+URL-en serveren starter på: localhost:8080/index.html
+
