@@ -8,7 +8,7 @@ import java.util.Map;
 public class HttpClient {
 
     private int statusCode;
-    private final Map<String, String> responseHeaders = new HashMap<>();
+    private Map<String, String> responseHeaders = new HashMap<>();
     private String responseBody;
 
     public HttpClient(final String hostname, int port, final String requestTarget) throws IOException {
@@ -31,45 +31,20 @@ public class HttpClient {
             socket.getOutputStream().write(requestBody.getBytes());
         }
 
-        String line = readLine(socket);
-        System.out.println(line);
+        HttpMessage response = new HttpMessage(socket);
 
-        String[] responseLineParts = line.split(" ");
+        String responseLine = response.getStartLine();
+        responseHeaders = response.getHeaders();
+        responseBody = response.getBody();
+
+        String[] responseLineParts = responseLine.split(" ");
 
         statusCode = Integer.parseInt(responseLineParts[1]);
-
-        String headerLine;
-        while (!(headerLine = readLine(socket)).isEmpty()){
-            int colonPos = headerLine.indexOf(':');
-            String headeName = headerLine.substring(0, colonPos);
-            String headerValue = headerLine.substring(colonPos+1).trim();
-            responseHeaders.put(headeName, headerValue);
-        }
-
-        int contentLength = Integer.parseInt(getResponseHeader("Content-Length"));
-        StringBuilder body  = new StringBuilder();
-        for (int i = 0; i < contentLength; i++) {
-            body.append((char)socket.getInputStream().read());
-        }
-        responseBody = body.toString();
-    }
-
-    public static String readLine(Socket socket) throws IOException {
-        StringBuilder line = new StringBuilder();
-        int c;
-        while ((c = socket.getInputStream().read()) != -1) {
-            if (c == '\r') {
-
-                socket.getInputStream().read();
-                break;
-            }
-            line.append((char) c);
-        }
-        return line.toString();
     }
 
     public static void main(String[] args) throws IOException {
-        new HttpClient("urlecho.appspot.com", 80, "/echo?status=404&Content-Type=text%2Fhtml&body=Hei");
+        HttpClient client = new HttpClient("urlecho.appspot.com", 80, "/echo?status=404&Content-Type=text%2Fhtml&body=Hello+world");
+        System.out.println(client.getResponseBody());
     }
 
     public int getStatusCode() {

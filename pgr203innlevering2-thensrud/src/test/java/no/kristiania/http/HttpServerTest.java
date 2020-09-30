@@ -77,18 +77,19 @@ class HttpServerTest {
     }
 
     @Test
-    void shouldPostNewProduct() throws IOException {
+    void shouldPostNewWorker() throws IOException {
         HttpServer server = new HttpServer(10008);
-        HttpClient client = new HttpClient("localhost", 10008, "/api/newProduct", "POST", "productName=apples&price=10");
+        HttpClient client = new HttpClient("localhost", 10008, "/api/newWorker", "POST", "full_name=Thorstein&email_address=abc@hotmail.dsf");
         assertEquals(200, client.getStatusCode());
-        assertEquals(List.of("apples"), server.getProductNames());
+        assertEquals(List.of("Thorstein"), server.getWorkerNames());
     }
 
+
     @Test
-    void shouldReturnExistingProducts() throws IOException {
+    void shouldReturnExistingWorkers() throws IOException {
         HttpServer server = new HttpServer(10009);
-        server.getProductNames().add("Coconuts");
-        HttpClient client = new HttpClient("localhost", 10009, "/api/products");
-        assertEquals("<ul><li>Coconuts</li></ul>", client.getResponseBody());
+        server.getWorkerNames().add("Thorstein");
+        HttpClient client = new HttpClient("localhost", 10009, "/api/workers");
+        assertEquals("<ul><li>Thorstein</li></ul>", client.getResponseBody());
     }
 }
