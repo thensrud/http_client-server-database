@@ -89,7 +89,7 @@ class HttpServerTest {
     void shouldReturnExistingWorkers() throws IOException {
         HttpServer server = new HttpServer(10009);
         server.getWorkerNames().add("Thorstein");
-        HttpClient client = new HttpClient("localhost", 10009, "/api/workers");
+        HttpClient client = new HttpClient("localhost", 10009, "/api/showWorkers");
         assertEquals("<ul><li>Thorstein</li></ul>", client.getResponseBody());
     }
 }
