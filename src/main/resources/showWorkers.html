@@ -2,20 +2,17 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Add project member | KristianiaProject</title>
+    <title>KristianiaProject</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<h1>Add project member</h1>
+<h1>Workers</h1>
 
-<form method="POST" action="/members">
-    <div><label>Member name: <input type="text" name="full_name" /></label></div>
-    <div><label>Email address: <input type="email" name="email_address" /></label></div>
-    <button>Add</button>
-</form>
+<div id="showWorkers"></div>
 
-<div>
-    <a href="../java">Return to front page</a>
-</div>
 </body>
+<script>
+    const workers = document.getElementById("showWorkers");
+    fetch("/api/showWorkers").then(resp => resp.text()).then(html => showWorkers.innerHTML = html);
+</script>
 </html>
