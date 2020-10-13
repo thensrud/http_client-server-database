@@ -44,8 +44,9 @@ public class HttpServer {
             QueryString requestParameter = new QueryString(request.getBody());
 
             workerNames.add(requestParameter.getParameter("full_name"));
-            String body = "Okay";
+            String body = "Okay...";
             String response = "HTTP/1.1 200 OK\r\n" +
+                    "Connection: close \r\n" +
                     "Content-Length: " + body.length() + "\r\n" +
                     "\r\n" +
                     body;
@@ -60,6 +61,7 @@ public class HttpServer {
                 if (!file.exists()) {
                     String body = file + " does not exist";
                     String response = "HTTP/1.1 404 Not Found\r\n" +
+                            "Connection: close \r\n" +
                             "Content-Length: " + body.length() + "\r\n" +
                             "\r\n" +
                             body;
