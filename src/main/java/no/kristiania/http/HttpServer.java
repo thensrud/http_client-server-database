@@ -5,6 +5,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,9 +45,13 @@ public class HttpServer {
         if (requestMethod.equals("POST")) {
             QueryString requestParameter = new QueryString(request.getBody());
 
-            workerNames.add(requestParameter.getParameter("full_name"));
+            String fullName = requestParameter.getParameter("full_name");
+            String emailAddressURLEncoded = requestParameter.getParameter("email_address");
+            String emailAddress = URLDecoder.decode(emailAddressURLEncoded, StandardCharsets.UTF_8);
+            workerNames.add("Name: " + fullName + ". E-mail: " + emailAddress);
             String body = "Okay...";
-            String response = "HTTP/1.1 200 OK\r\n" +
+            String response = "HTTP/1.1 302 REDIRECT\r\n" +
+                    "Location: http://localhost:8085/showWorkers.html\r\n" +
                     "Connection: close \r\n" +
                     "Content-Length: " + body.length() + "\r\n" +
                     "\r\n" +
