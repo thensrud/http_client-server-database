@@ -51,9 +51,13 @@ public class ProductDao {
         // TODO: database passwords should never be checked in!
         dataSource.setPassword("123456");
 
+        ProductDao productDao = new ProductDao(dataSource);
+
         System.out.println("Whats the name of the new product?");
         Scanner scanner = new Scanner(System.in);
         String productName = scanner.nextLine();
-    }
 
+        productDao.insert(productName);
+        System.out.println(productDao.list());
+    }
 }
