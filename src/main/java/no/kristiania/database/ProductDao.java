@@ -2,6 +2,7 @@ package no.kristiania.database;
 
 import org.postgresql.ds.PGSimpleDataSource;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,9 +13,20 @@ import java.util.Scanner;
 
 public class ProductDao {
 
-    private final ArrayList<String> products = new ArrayList<>();
+    private ArrayList<String> products = new ArrayList<>();
+    private DataSource dataSource;
 
-    public void insert(String product) {
+    public ProductDao(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
+
+    public void insert(String product) throws SQLException {
+        try (Connection connection = dataSource.getConnection()) {
+            try (PreparedStatement statement = connection.prepareStatement("INSERT INTO products (product_name) values (?)")) {
+                statement.setString(1, product);
+                statement.executeUpdate();
+            }
+        }
         products.add(product);
     }
 
@@ -32,13 +44,6 @@ public class ProductDao {
         System.out.println("Whats the name of the new product?");
         Scanner scanner = new Scanner(System.in);
         String productName = scanner.nextLine();
-
-        try (Connection connection = dataSource.getConnection()) {
-            try (PreparedStatement statement = connection.prepareStatement("INSERT INTO products (product_name) values (?)")) {
-                statement.setString(1, productName);
-                statement.executeUpdate();
-            }
-        }
 
         try (Connection connection = dataSource.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement("SELECT * FROM products")) {
