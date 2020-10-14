@@ -1,5 +1,9 @@
 package no.kristiania.http;
 
+import no.kristiania.database.ProductDao;
+import org.postgresql.ds.PGSimpleDataSource;
+
+import javax.sql.DataSource;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -7,15 +11,18 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class HttpServer {
 
     private File contentRoot;
-    private List<String> workerNames = new ArrayList<>();
+    private ProductDao productDao;
 
-    public HttpServer(int port) throws IOException {
+    public HttpServer(int port, DataSource dataSource) throws IOException {
+        productDao = new ProductDao(dataSource);
+
         ServerSocket serverSocket = new ServerSocket(port);
 
         new Thread(() -> {
@@ -23,14 +30,14 @@ public class HttpServer {
                 try {
                     Socket clientSocket = serverSocket.accept();
                     handleRequest(clientSocket);
-                } catch (IOException e) {
+                } catch (IOException | SQLException e) {
                     e.printStackTrace();
                 }
             }
         }).start();
     }
 
-    private void handleRequest(Socket clientSocket) throws IOException {
+    private void handleRequest(Socket clientSocket) throws IOException, SQLException {
         HttpMessage request = new HttpMessage(clientSocket);
         String requestLine = request.getStartLine();
         System.out.println(requestLine);
@@ -48,7 +55,8 @@ public class HttpServer {
             String fullName = requestParameter.getParameter("full_name");
             String emailAddressURLEncoded = requestParameter.getParameter("email_address");
             String emailAddress = URLDecoder.decode(emailAddressURLEncoded, StandardCharsets.UTF_8);
-            workerNames.add("Name: " + fullName + ". E-mail: " + emailAddress);
+
+            productDao.insert("Name: " + fullName + ". E-mail: " + emailAddress);
             String body = "Okay...";
             String response = "HTTP/1.1 302 REDIRECT\r\n" +
                     "Location: http://localhost:8085/showWorkers.html\r\n" +
@@ -94,9 +102,9 @@ public class HttpServer {
         }
     }
 
-    private void handleGetWorker(Socket clientSocket) throws IOException {
+    private void handleGetWorker(Socket clientSocket) throws IOException, SQLException {
         String body = "<ul>";
-        for (String workerName : workerNames) {
+        for (String workerName : productDao.list()) {
             body += "<li>" + workerName + "</li>";
         }
         body += "</ul>";
@@ -133,7 +141,13 @@ public class HttpServer {
     }
 
     public static void main(String[] args) throws IOException {
-        HttpServer server = new HttpServer(8085);
+        PGSimpleDataSource dataSource = new PGSimpleDataSource();
+        dataSource.setUrl("jdbc:postgresql://localhost:5432/kristianiashop");
+        dataSource.setUser("kristianiashopuser");
+        // TODO: database passwords should never be checked in!
+        dataSource.setPassword("123456");
+
+        HttpServer server = new HttpServer(8085, dataSource);
         server.setContentRoot(new File("src/main/resources/"));
     }
 
@@ -141,7 +155,7 @@ public class HttpServer {
         this.contentRoot = contentRoot;
     }
 
-    public List<String> getWorkerNames() {
-        return workerNames;
+    public List<String> getWorkerNames() throws SQLException {
+        return productDao.list();
     }
 }
