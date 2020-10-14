@@ -32,7 +32,7 @@ public class ProductDao {
         try (Connection connection = dataSource.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement("SELECT * FROM products")) {
                 try (ResultSet rs = statement.executeQuery()) {
-                    List<String> products = new ArrayList<>():
+                    List<String> products = new ArrayList<>();
                     while (rs.next()) {
                         products.add(rs.getString("product_name"));
                     }
