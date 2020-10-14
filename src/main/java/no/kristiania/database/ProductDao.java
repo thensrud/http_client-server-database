@@ -13,7 +13,6 @@ import java.util.Scanner;
 
 public class ProductDao {
 
-    private ArrayList<String> products = new ArrayList<>();
     private DataSource dataSource;
 
     public ProductDao(DataSource dataSource) {
@@ -27,7 +26,6 @@ public class ProductDao {
                 statement.executeUpdate();
             }
         }
-        products.add(product);
     }
 
     public List<String> list() throws SQLException {
